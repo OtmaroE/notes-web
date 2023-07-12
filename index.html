@@ -3,10 +3,18 @@
 </head>
 <body>
     <h1>Notes</h1>
-    <div>User name: </div>
-    <input>
-    <div>Password:</div>
-    <input>
-    <div></div>
-    <button>Submit</button>
+    <form action="/login" method="post">
+        <label for="username">User name:</label>
+        <input name="username" id="userName" placeholder="enter username" required>
+        <label for="password">Password:</label>
+        <input id="password" type="password" placeholder="enter password" required>
+        <div></div>
+        <button onclick="login()" type="submit">Login</button>
+    </form>
+    <script>
+        function login() {
+            const userName = document.getElementById('userName').value;
+            const password = document.getElementById('password').value;
+        }
+    </script>
 </body>
