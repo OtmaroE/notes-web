@@ -5,16 +5,10 @@
     <h1>Notes</h1>
     <form action="/login" method="post">
         <label for="username">User name:</label>
-        <input name="username" id="userName" placeholder="enter username" required>
+        <input name="username" id="username" placeholder="enter username" required>
         <label for="password">Password:</label>
-        <input id="password" type="password" placeholder="enter password" required>
+        <input name="password" id="password" type="password" placeholder="enter password" required>
         <div></div>
-        <button onclick="login()" type="submit">Login</button>
+        <button type="submit">Login</button>
     </form>
-    <script>
-        function login() {
-            const userName = document.getElementById('userName').value;
-            const password = document.getElementById('password').value;
-        }
-    </script>
 </body>
