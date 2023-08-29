@@ -5,8 +5,10 @@ import {
   RouterProvider,
 } from 'react-router-dom';
 import reportWebVitals from './reportWebVitals';
+import Protected from './Protected';
 
 import App from './App';
+import Login from './Elements/Login';
 import './index.css'
 
 const router = createBrowserRouter([
@@ -16,11 +18,11 @@ const router = createBrowserRouter([
   },
   {
     path: '/login',
-    element: <div>Login Page</div>,
+    element: <Login/>,
   },
   {
     path: '/notes',
-    element: <App/>,
+    element: <Protected> <App/> </Protected>,
   }
 ]);
 
