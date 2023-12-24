@@ -1,6 +1,6 @@
-import './App.css';
-import Note from './Elements/Note';
-import NotesHeader from './Elements/Notes-Header';
+import './Notes.css';
+import Note from './Note';
+import NotesHeader from './Notes-Header';
 
 function  App() {
   return (
