@@ -1,5 +1,6 @@
 import './Note.css';
 import data from'../note-data.json';
+
 function Note() {
   return (
     <div>
