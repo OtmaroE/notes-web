@@ -10,6 +10,10 @@ export default function Protected({ children }) {
   return children;
 }
 
+export function getToken() {
+  return localStorage.getItem('token');
+}
+
 export function isLoggedIn() {
   const token = localStorage.getItem('token');
   // TODO: This should validate the token

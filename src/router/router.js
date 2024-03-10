@@ -7,10 +7,11 @@ import {
 import reportWebVitals from '../reportWebVitals';
 import Protected from '../security/Protected';
 
-import Notes from '../elements/Notes';
-import Home from '../elements/Home';
-import Login from '../elements/Login';
-import Logout from '../elements/Logout';
+import Notes from '../elements/Notes.js';
+import Folders from '../elements/Folders.js'
+import Home from '../elements/Home.js';
+import Login from '../elements/Login.js';
+import Logout from '../elements/Logout.js';
 import './router.css'
 
 const router = createBrowserRouter([
@@ -29,6 +30,10 @@ const router = createBrowserRouter([
   {
     path: '/notes',
     element: <Protected> <Notes/> </Protected>,
+  },
+  {
+    path: '/folders',
+    element: <Protected> <Folders/> </Protected>
   }
 ]);
 

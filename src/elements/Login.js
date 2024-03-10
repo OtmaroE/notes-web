@@ -12,15 +12,20 @@ export default function Login() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const { username, password } = document.forms[0];
-    const loginResponse = await fetch(`http://localhost:3030/users/login?email=${username.value}&password=${password.value}`, {
-      method: 'POST',
-    });
-    if(loginResponse.status !== 200) {
+    try {
+      const loginResponse = await fetch(`http://localhost:3030/users/login?email=${username.value}&password=${password.value}`, {
+        method: 'POST',
+      });
+      if(loginResponse.status !== 200) {
+        setLoginError(true);
+      } else {
+        setLoginError(false);
+        const token = await loginResponse.text();
+        localStorage.setItem('token', token);
+        navigate('/');
+      }
+    } catch (error) {
       setLoginError(true);
-    } else {
-      setLoginError(false);
-      localStorage.setItem('token', loginResponse.text());
-      navigate('/');
     }
   }
   const loginForm = (

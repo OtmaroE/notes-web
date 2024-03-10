@@ -1,4 +1,6 @@
 import { Link } from "react-router-dom";
+
+import './Folders.css';
 import { isLoggedIn } from "../security/Protected";
 
 export default function Home() {
@@ -6,7 +8,7 @@ export default function Home() {
     <div>
       <ul>
         <li>
-          <Link to='/notes'>See my notes</Link>
+          <Link to='/folders'>See my folders</Link>
         </li>
         <li>
           <Link to='/logout'>Logout</Link>

@@ -1,0 +1,26 @@
+#folder_wrapper {
+  background-color: aqua;
+  border-radius: 5px;
+  display: flex;
+  color: black;
+  flex-direction: column;
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+#folder_directory {
+ columns: 2;
+ margin-top: 25px;
+}
+
+#folder_content {
+  padding: 20px;
+}
+
+#folder_content:hover {
+  background-color: blueviolet;
+  color: white;
+  transition-duration: 0.2s;
+}

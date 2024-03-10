@@ -1,10 +1,16 @@
 import './Note.css';
 import data from'../note-data.json';
+import { useEffect, useState } from 'react';
 
 function Note() {
+  const [notes, setNotes] = useState([]);
+
+  useEffect(() => {
+    setNotes(data);
+  })
   return (
     <div>
-      {data.map(item => {
+      {notes.map(item => {
         return (
           <div>
           <div id='note'>
