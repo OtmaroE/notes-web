@@ -2,10 +2,12 @@ import { useEffect, useState } from 'react';
 
 import Header from './Header.js';
 import { getToken } from '../security/Protected.js';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 function folders() {
   const [folders, setFolders] = useState([]);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getFolders = async () => {
@@ -23,14 +25,14 @@ function folders() {
           setFolders(folders);
         }
       } catch (error) {
-        console.error('unable to load folders')
+        console.error('unable to load folders');
       }  
     }
     getFolders();
   }, []);
 
   const handleClick = (item) => {
-    return console.log('cliked', item);
+    return navigate('/notes', { state:  item });
   };
 
   return (
