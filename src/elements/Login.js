@@ -3,6 +3,7 @@ import { useState } from 'react';
 import './Login.css';
 import { isLoggedIn } from '../security/Protected';
 import { useNavigate } from 'react-router-dom';
+import { login } from '../http-requests';
 
 export default function Login() {
   const [loginError, setLoginError] = useState(false); 
@@ -13,9 +14,7 @@ export default function Login() {
     event.preventDefault();
     const { username, password } = document.forms[0];
     try {
-      const loginResponse = await fetch(`http://localhost:3030/users/login?email=${username.value}&password=${password.value}`, {
-        method: 'POST',
-      });
+      const response = await login(username.value, password.value);
       if(loginResponse.status !== 200) {
         setLoginError(true);
       } else {

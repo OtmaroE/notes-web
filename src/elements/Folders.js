@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 
 import Header from './Header.js';
-import { getToken } from '../security/Protected.js';
 import { Link, useNavigate } from 'react-router-dom';
+import { getFolders } from '../http-requests/index.js';
 
 function folders() {
   const [folders, setFolders] = useState([]);
@@ -10,25 +10,7 @@ function folders() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const getFolders = async () => {
-      const token = getToken(); 
-      try {
-        const foldersResponse = await fetch('http://localhost:3030/users/me/folders', {
-          headers: {
-            Authorization: `bearer ${token}`,
-          }
-        });
-        if (foldersResponse.status !== 200) {
-          console.log('unable to load folders');
-        } else {
-          const folders = await foldersResponse.json();
-          setFolders(folders);
-        }
-      } catch (error) {
-        console.error('unable to load folders');
-      }  
-    }
-    getFolders();
+    getFolders(setFolders);
   }, []);
 
   const handleClick = (item) => {

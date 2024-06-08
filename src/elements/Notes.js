@@ -5,7 +5,7 @@ import { useLocation } from "react-router-dom";
 import './Notes.css';
 import './Note.css';
 import Header from './Header';
-import { getToken } from '../security/Protected';
+import { getNotes } from '../http-requests';
 
 function  App() {
   const [notes, setNotes] = useState([]);
@@ -13,25 +13,7 @@ function  App() {
   const location = useLocation();
 
   useEffect(() => {
-    const getNotes = async () => {
-      const token = getToken();
-      try {
-        const notesResponse = await fetch(`http://localhost:3030/users/me/folders/${location.state.id}/notes`, {
-          headers: {
-            Authorization: `bearer ${token}`,
-          }
-        });
-        if (notesResponse.status !== 200) {
-          console.log('unable to load notes');
-        } else {
-          const notes = await notesResponse.json();
-          setNotes(notes);
-        }
-      } catch (error) {
-        console.log('unable to load notes');
-      }
-    }
-    getNotes();
+    getNotes(location.state.id, setNotes);
   }, []);
 
   return (
