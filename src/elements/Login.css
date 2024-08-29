@@ -3,7 +3,11 @@
 }
 
 .login-form {
-  max-width: 300px;
+  left: 50%;
+  top: 30%;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  min-width: 350px;
 }
 
 .login-form-forgot {
@@ -16,14 +20,4 @@
 
 .login-form-button {
   width: 100%;
-}
-
-.login-form {
-  position: absolute;
-  bottom: auto;
-    right:0;
-    left:0;
-    top: 50px;
-  margin-left:auto;
-  margin-right:auto;
 }

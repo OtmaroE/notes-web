@@ -40,10 +40,10 @@ export default function Login() {
   const loginForm = (
     <Form name='login page' className='login-form' onFinish={handleSubmit}>
       <Form.Item name='username' rules={usernameRules}>
-        <Input prefix={<UserOutlined className='site-form-item-icon' placeholder='username'/>}/>
+        <Input prefix={<UserOutlined className='site-form-item-icon'/>} placeholder='username'/>
       </Form.Item>
       <Form.Item name='password' rules={passwordRules}>
-        <Input prefix={<LockOutlined className='site-form-item-icon'/>} type='password' placeholder='passowrd' />
+        <Input prefix={<LockOutlined className='site-form-item-icon'/>} type='password' placeholder='passoword' />
         {loginError && <div className='error-message'>username or password is wrong!</div>}
       </Form.Item>
       <Form.Item>
