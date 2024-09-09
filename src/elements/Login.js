@@ -38,7 +38,7 @@ export default function Login() {
   ];
 
   const loginForm = (
-    <Form name='login page' className='login-form' onFinish={handleSubmit}>
+    <Form name='login page' onFinish={handleSubmit}>
       <Form.Item name='username' rules={usernameRules}>
         <Input prefix={<UserOutlined className='site-form-item-icon'/>} placeholder='username'/>
       </Form.Item>
@@ -64,7 +64,7 @@ export default function Login() {
   );
 
   return (
-    <div>
+    <div id='login-form'>
       { isLoggedIn() ? navigate('/') : loginForm }
     </div>
   );
