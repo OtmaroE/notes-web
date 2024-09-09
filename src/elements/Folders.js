@@ -25,7 +25,9 @@ function folders() {
         {folders.map(item => {
           return (
             <div id='folder_wrapper'>
-              <div id='folder_content' onClick={() => handleClick(item)}>{item.name}</div>
+              <div id='folder_content' onClick={() => handleClick(item)}>
+                <div>Name: {item.name}</div>
+              </div>
             </div>
           )
         })}

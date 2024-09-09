@@ -13,6 +13,9 @@ export default function Home() {
         <li>
           <Link to='/logout'>Logout</Link>
         </li>
+        <li>
+          <Link to="/folders-beta">New Folders</Link>
+        </li>
       </ul>
     </div>
   )
