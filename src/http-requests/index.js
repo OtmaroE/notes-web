@@ -28,7 +28,11 @@ export async function getFolders(next) {
         console.log('unable to load folders');
       } else {
         const folders = await foldersResponse.json();
-        next(folders);
+        if (next) {
+          next(folders);
+        } else {
+          return folders;
+        }
       }
     } catch (error) {
       console.error('unable to load folders');
@@ -51,7 +55,11 @@ export async function getNotes(folderId, next) {
       console.log('unable to load notes');
     } else {
       const notes = await notesResponse.json();
-      next(notes);
+      if (next) {
+        next(notes);
+      } else {
+        return notes;
+      }
     }
   } catch (error) {
     console.log('unable to load notes');
