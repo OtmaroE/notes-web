@@ -1,15 +1,14 @@
-import { Tree } from "antd";
+import { Tree, Button } from "antd";
 import { useEffect, useState } from "react";
 import MDEditor from "@uiw/react-md-editor";
 
-import { getFolders, getNotes } from "../http-requests";
+import { getFolders, getNotes, getNote } from "../http-requests";
 import './Folders-beta.css';
 const { DirectoryTree } = Tree;
 
 export default function FoldersBeta() {
   const [directory, setDirectory] = useState([]);
   const [noteContent, setNoteContent] = useState('');
-  const [notes, setNotes] = useState([]);
 
   useEffect(() => {
     const setup = async () => {
@@ -32,7 +31,7 @@ export default function FoldersBeta() {
     const { node } = event;
     if (node.expanded) return;
     if (node.type === 'note') {
-      const note = notes.find(note => note.id === node.noteId);
+      const note = await getNote(node.folderId, node.noteId);
       setNoteContent(note.content);
     } else {
       const notes = await getNotes(id);
@@ -44,6 +43,7 @@ export default function FoldersBeta() {
               title: note.name,
               key: `note-${note.id}`,
               noteId: note.id,
+              folderId: note.folderId,
               type: 'note',
               isLeaf: true,
             })),
@@ -52,7 +52,6 @@ export default function FoldersBeta() {
         return folder;
       });
       setDirectory(newFolders);
-      setNotes(notes);
     }
   }
 
@@ -62,8 +61,14 @@ export default function FoldersBeta() {
         treeData={directory}
         onSelect={handleOnSelect}
       />
+      <Button type='primary'>Save</Button>
       <div data-color-mode="light">
-        <MDEditor className='panel' value={noteContent} onChange={setNoteContent} height='99vh'/>
+        <MDEditor
+          className='panel'
+          value={noteContent}
+          onChange={setNoteContent}
+          height='95vh'
+        />
       </div>
     </div>
   )

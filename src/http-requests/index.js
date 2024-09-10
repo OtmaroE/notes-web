@@ -65,3 +65,26 @@ export async function getNotes(folderId, next) {
     console.log('unable to load notes');
   }
 }
+
+/**
+ * Fetches a note with its full body
+ * @param {Number} noteId 
+ */
+export async function getNote(folderId, noteId) {
+  const token = getToken();
+  try {
+    const noteResponse = await fetch(`${HOST}/users/me/folders/${folderId}/notes/${noteId}`, {
+      headers: {
+        Authorization: `bearer ${token}`,
+      }
+    });
+    if (noteResponse.status !== 200) {
+      console.log('unable to fetch notes');
+    } else {
+      return noteResponse.json();
+    }
+
+  } catch (error) {
+    console.log('unable to fetch note');
+  }
+}
