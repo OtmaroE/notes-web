@@ -64,7 +64,7 @@ export default function Login() {
   );
 
   return (
-    <div id='login-form'>
+    <div className='login-form'>
       { isLoggedIn() ? navigate('/') : loginForm }
     </div>
   );
