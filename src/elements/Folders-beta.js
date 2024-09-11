@@ -1,6 +1,7 @@
 import { Tree, Button } from "antd";
 import { useEffect, useState } from "react";
 import MDEditor from "@uiw/react-md-editor";
+import { useNavigate } from 'react-router-dom';
 
 import { getFolders, getNotes, getNote } from "../http-requests";
 import './Folders-beta.css';
@@ -9,6 +10,9 @@ const { DirectoryTree } = Tree;
 export default function FoldersBeta() {
   const [directory, setDirectory] = useState([]);
   const [noteContent, setNoteContent] = useState('');
+  const [isNoteSelected, setIsNoteSelected] = useState(false);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const setup = async () => {
@@ -33,6 +37,7 @@ export default function FoldersBeta() {
     if (node.type === 'note') {
       const note = await getNote(node.folderId, node.noteId);
       setNoteContent(note.content);
+      setIsNoteSelected(true);
     } else {
       const notes = await getNotes(id);
       const newFolders = directory.map(folder => {
@@ -53,23 +58,44 @@ export default function FoldersBeta() {
       });
       setDirectory(newFolders);
     }
-  }
+  };
+
+  const handleClick = () => {
+    return navigate('/');
+  };
 
   return (
     <div>
-      <DirectoryTree className='tree'
-        treeData={directory}
-        onSelect={handleOnSelect}
-      />
-      <Button type='primary'>Save</Button>
-      <div data-color-mode="light">
-        <MDEditor
-          className='panel'
-          value={noteContent}
-          onChange={setNoteContent}
-          height='95vh'
+      <div className='tree'>
+        <div className='control-buttons'>
+          <Button type='dashed' onClick={() => handleClick()}>Back</Button>
+          <Button type='primary'>Add</Button>
+        </div>
+        <DirectoryTree
+          treeData={directory}
+          onSelect={handleOnSelect}
         />
       </div>
+      <div data-color-mode="light">
+        {
+          isNoteSelected ?
+            <MDEditor
+            className='panel'
+            value={noteContent}
+            onChange={setNoteContent}
+            height='95vh'
+            />
+          :
+          <div>Please select a note to edit</div>
+        }
+      </div>
+      {
+        isNoteSelected &&
+        <div className='control-buttons'>
+          <Button type='primary'>Save</Button>
+          <Button danger='true' type='primary'>Delete</Button>
+        </div>
+      }
     </div>
   )
 }

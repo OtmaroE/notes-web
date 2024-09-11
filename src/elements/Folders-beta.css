@@ -10,3 +10,8 @@
 .panel {
   height: 80vh;
 }
+
+.control-buttons {
+  display: flex;
+  justify-content: space-between;
+}
