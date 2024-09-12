@@ -3,13 +3,14 @@ import { useEffect, useState } from "react";
 import MDEditor from "@uiw/react-md-editor";
 import { useNavigate } from 'react-router-dom';
 
-import { getFolders, getNotes, getNote } from "../http-requests";
+import { getFolders, getNotes, getNote, updateNote } from "../http-requests";
 import './Folders-beta.css';
 const { DirectoryTree } = Tree;
 
 export default function FoldersBeta() {
   const [directory, setDirectory] = useState([]);
   const [noteContent, setNoteContent] = useState('');
+  const [selectedNote, setSelectedNote] = useState({});
   const [isNoteSelected, setIsNoteSelected] = useState(false);
 
   const navigate = useNavigate();
@@ -38,6 +39,7 @@ export default function FoldersBeta() {
       const note = await getNote(node.folderId, node.noteId);
       setNoteContent(note.content);
       setIsNoteSelected(true);
+      setSelectedNote(note);
     } else {
       const notes = await getNotes(id);
       const newFolders = directory.map(folder => {
@@ -63,6 +65,12 @@ export default function FoldersBeta() {
   const handleClick = () => {
     return navigate('/');
   };
+
+  const handleSave = async () => {
+    const { id, folderId } = selectedNote;
+    const updatedNote = { content: noteContent}
+    await updateNote(folderId, id, updatedNote);
+  }; 
 
   return (
     <div>
@@ -92,7 +100,7 @@ export default function FoldersBeta() {
       {
         isNoteSelected &&
         <div className='control-buttons'>
-          <Button type='primary'>Save</Button>
+          <Button type='primary' onClick={handleSave}>Save</Button>
           <Button danger='true' type='primary'>Delete</Button>
         </div>
       }

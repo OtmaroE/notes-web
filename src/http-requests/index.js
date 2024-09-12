@@ -88,3 +88,24 @@ export async function getNote(folderId, noteId) {
     console.log('unable to fetch note');
   }
 }
+
+export async function updateNote(folderId, noteId, note) {
+  const token = getToken();
+  try {
+    const noteResponse = await fetch(`${HOST}/users/me/folders/${folderId}/notes/${noteId}`, {
+      headers: {
+        Authorization: `bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      method: 'PATCH',
+      body: JSON.stringify(note),
+    });
+    if (noteResponse.status !== 200) {
+      console.log('unable to fetch notes');
+    } else {
+      return noteResponse.json();
+    }
+  } catch (error) {
+    console.log('unable to update note');
+  }
+}
