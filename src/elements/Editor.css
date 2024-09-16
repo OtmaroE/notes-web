@@ -1,9 +1,9 @@
 .tree {
   padding-right: 10px;
-  padding-top: 10px;
   width: 20%;
   float: left;
   height: 100vh;
+  border-style: double;
   /* background-color: red; */
 }
 
@@ -11,7 +11,14 @@
   height: 80vh;
 }
 
+.navigator {
+  margin-top: 15px;
+}
+
 .control-buttons {
   display: flex;
   justify-content: space-between;
+  border-bottom-style: dotted;
+  padding: 5px;
+  padding-right: 10px;
 }

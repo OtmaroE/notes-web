@@ -4,10 +4,10 @@ import MDEditor from "@uiw/react-md-editor";
 import { useNavigate } from 'react-router-dom';
 
 import { getFolders, getNotes, getNote, updateNote } from "../http-requests";
-import './Folders-beta.css';
+import './Editor.css';
 const { DirectoryTree } = Tree;
 
-export default function FoldersBeta() {
+export default function Editor() {
   const [directory, setDirectory] = useState([]);
   const [noteContent, setNoteContent] = useState('');
   const [selectedNote, setSelectedNote] = useState({});
@@ -82,6 +82,7 @@ export default function FoldersBeta() {
         <DirectoryTree
           treeData={directory}
           onSelect={handleOnSelect}
+          className='navigator'
         />
       </div>
       <div data-color-mode="light">

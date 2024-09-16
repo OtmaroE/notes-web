@@ -12,7 +12,7 @@ import Folders from '../elements/Folders.js'
 import Home from '../elements/Home.js';
 import Login from '../elements/Login.js';
 import Logout from '../elements/Logout.js';
-import FoldersBeta from '../elements/Folders-beta.js';
+import Editor from '../elements/Editor.js';
 import './router.css'
 
 const router = createBrowserRouter([
@@ -37,8 +37,8 @@ const router = createBrowserRouter([
     element: <Protected> <Folders/> </Protected>
   },
   {
-    path: '/folders-beta',
-    element: <Protected> <FoldersBeta/> </Protected>
+    path: '/editor',
+    element: <Protected> <Editor/> </Protected>
   }
 ]);
 

@@ -8,13 +8,10 @@ export default function Home() {
     <div>
       <ul>
         <li>
-          <Link to='/folders'>See my folders</Link>
+          <Link to="/editor">Editor App</Link>
         </li>
         <li>
           <Link to='/logout'>Logout</Link>
-        </li>
-        <li>
-          <Link to="/folders-beta">New Folders</Link>
         </li>
       </ul>
     </div>
