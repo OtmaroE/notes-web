@@ -92,7 +92,7 @@ export default function Editor() {
             className='panel'
             value={noteContent}
             onChange={setNoteContent}
-            height='95vh'
+            height='94vh'
             />
           :
           <div>Please select a note to edit</div>
