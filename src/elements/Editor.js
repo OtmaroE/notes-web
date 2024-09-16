@@ -12,6 +12,8 @@ export default function Editor() {
   const [noteContent, setNoteContent] = useState('');
   const [selectedNote, setSelectedNote] = useState({});
   const [isNoteSelected, setIsNoteSelected] = useState(false);
+  const [addElement, setAddElement] = useState(false);
+  const [adding, setAdding] = useState('');
 
   const navigate = useNavigate();
 
@@ -68,17 +70,30 @@ export default function Editor() {
 
   const handleSave = async () => {
     const { id, folderId } = selectedNote;
-    const updatedNote = { content: noteContent}
+    const updatedNote = { content: noteContent};
     await updateNote(folderId, id, updatedNote);
-  }; 
+  };
+
+  const handleAddElement = async () => {
+    console.log('Add element: ', adding);
+  }
 
   return (
     <div>
       <div className='tree'>
         <div className='control-buttons'>
           <Button type='dashed' onClick={() => handleClick()}>Back</Button>
-          <Button type='primary'>Add</Button>
+          <Button type='primary' onClick={() => { setAddElement(true); setAdding('folder'); }}>Add Folder</Button>
+          <Button type='primary' onClick={() => { setAddElement(true); setAdding('note'); }}>Add Note</Button>
         </div>
+        {
+          addElement &&
+          <div className='add-folder'>
+            <input></input>
+            <Button type='primary' onClick={() => { handleAddElement(); setAddElement(false); }}>Add</Button>
+            <Button danger='true' onClick={() => { setAddElement(false); }}>Cancel</Button>
+          </div>
+        }
         <DirectoryTree
           treeData={directory}
           onSelect={handleOnSelect}
