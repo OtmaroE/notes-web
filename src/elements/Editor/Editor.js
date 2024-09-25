@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import MDEditor from "@uiw/react-md-editor";
 import { useNavigate } from 'react-router-dom';
 
-import { getFolders, getNotes, getNote, updateNote } from "../http-requests";
+import { getFolders, getNotes, getNote, updateNote } from "../../http-requests";
 import './Editor.css';
 const { DirectoryTree } = Tree;
 

@@ -7,12 +7,10 @@ import {
 import reportWebVitals from '../reportWebVitals';
 import Protected from '../security/Protected';
 
-import Notes from '../elements/Notes.js';
-import Folders from '../elements/Folders.js'
 import Home from '../elements/Home.js';
 import Login from '../elements/Login.js';
 import Logout from '../elements/Logout.js';
-import Editor from '../elements/Editor.js';
+import Editor from '../elements/Editor/Editor.js';
 import './router.css'
 
 const router = createBrowserRouter([
@@ -27,14 +25,6 @@ const router = createBrowserRouter([
   {
     path: '/logout',
     element: <Logout/>
-  },
-  {
-    path: '/notes',
-    element: <Protected> <Notes/> </Protected>,
-  },
-  {
-    path: '/folders',
-    element: <Protected> <Folders/> </Protected>
   },
   {
     path: '/editor',

@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 
-import './Folders.css';
 import { isLoggedIn } from "../security/Protected";
 
 export default function Home() {
