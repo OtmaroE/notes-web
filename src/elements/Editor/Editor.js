@@ -89,9 +89,9 @@ export default function Editor() {
         {
           addElement &&
           <div className='add-folder'>
-            <input></input>
+            <input placeholder={ `Add ${adding} name` } ></input>
             <Button type='primary' onClick={() => { handleAddElement(); setAddElement(false); }}>Add</Button>
-            <Button danger='true' onClick={() => { setAddElement(false); }}>Cancel</Button>
+            <Button danger='true' onClick={() => { handleAddElement(); setAddElement(false); }}>Cancel</Button>
           </div>
         }
         <DirectoryTree
