@@ -1,10 +1,10 @@
-import { Tree, Button } from "antd";
+import { Tree, Button, Input } from "antd";
 import { useEffect, useState } from "react";
 import MDEditor from "@uiw/react-md-editor";
 import { useNavigate } from 'react-router-dom';
-
-import { getFolders, getNotes, getNote, updateNote } from "../../http-requests";
+import { getFolders, getNotes, getNote, updateNote, addFolder } from "../../http-requests";
 import './Editor.css';
+
 const { DirectoryTree } = Tree;
 
 export default function Editor() {
@@ -14,6 +14,7 @@ export default function Editor() {
   const [isNoteSelected, setIsNoteSelected] = useState(false);
   const [addElement, setAddElement] = useState(false);
   const [adding, setAdding] = useState('');
+  const [newElementName, setNewElementName] = useState('');
 
   const navigate = useNavigate();
 
@@ -64,6 +65,11 @@ export default function Editor() {
     }
   };
 
+  const handleNewResourceName = (event) => {
+    const { target: { value = '' } = {} } = event;
+    setNewElementName(value)
+  };
+
   const handleClick = () => {
     return navigate('/');
   };
@@ -75,7 +81,19 @@ export default function Editor() {
   };
 
   const handleAddElement = async () => {
-    console.log('Add element: ', adding);
+    if (adding === 'folder') {
+      const folder = await addFolder({ name: newElementName });
+      const newFolder = {
+        title: folder.name,
+        type: 'folder',
+        key: folder.id,
+        children: [],
+      };
+      const newDirectory = [...directory, newFolder];
+      setDirectory(newDirectory);
+    } else if (adding === 'note' ) {
+
+    }
   }
 
   return (
@@ -84,12 +102,12 @@ export default function Editor() {
         <div className='control-buttons'>
           <Button type='dashed' onClick={() => handleClick()}>Back</Button>
           <Button type='primary' onClick={() => { setAddElement(true); setAdding('folder'); }}>Add Folder</Button>
-          <Button type='primary' onClick={() => { setAddElement(true); setAdding('note'); }}>Add Note</Button>
+          {/* <Button type='primary' onClick={() => { setAddElement(true); setAdding('note'); }}>Add Note</Button> */}
         </div>
         {
           addElement &&
           <div className='add-folder'>
-            <input placeholder={ `Add ${adding} name` } ></input>
+            <Input placeholder={ `Add ${adding} name` } onChange={handleNewResourceName} ></Input>
             <Button type='primary' onClick={() => { handleAddElement(); setAddElement(false); }}>Add</Button>
             <Button danger='true' onClick={() => { handleAddElement(); setAddElement(false); }}>Cancel</Button>
           </div>

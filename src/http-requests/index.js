@@ -89,6 +89,13 @@ export async function getNote(folderId, noteId) {
   }
 }
 
+/**
+ * Sends a PUT request to update the note with object note
+ * @param {Number} folderId 
+ * @param {Number} noteId 
+ * @param {Object} note 
+ * @returns 
+ */
 export async function updateNote(folderId, noteId, note) {
   const token = getToken();
   try {
@@ -106,6 +113,31 @@ export async function updateNote(folderId, noteId, note) {
       return noteResponse.json();
     }
   } catch (error) {
-    console.log('unable to update note');
+    console.error('unable to update note');
+  }
+}
+
+/**
+ * Sends a POST request to create a folder with folder object
+ * @param {Object} folder 
+ */
+export async function addFolder(folder) {
+  const token = getToken();
+  try {
+    const folderResponse = await fetch(`${HOST}/users/me/folders/`, {
+      headers: {
+        Authorization: `bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      method: 'POST',
+      body: JSON.stringify(folder),
+    });
+    if (folderResponse.status !== 201) {
+      console.error('unable to update note');
+    } else {
+      return folderResponse.json();
+    }
+  } catch (error) {
+    console.error('unable to update note');
   }
 }
