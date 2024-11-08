@@ -1,6 +1,7 @@
 import { Tree, Button, Input } from "antd";
 import { useEffect, useState } from "react";
 import MDEditor from "@uiw/react-md-editor";
+import { DeleteTwoTone, FolderAddTwoTone } from "@ant-design/icons";
 import { useNavigate } from 'react-router-dom';
 import { getFolders, getNotes, getNote, updateNote, addFolder } from "../../http-requests";
 import './Editor.css';
@@ -101,7 +102,8 @@ export default function Editor() {
       <div className='tree'>
         <div className='control-buttons'>
           <Button type='dashed' onClick={() => handleClick()}>Back</Button>
-          <Button type='primary' onClick={() => { setAddElement(true); setAdding('folder'); }}>Add Folder</Button>
+          <FolderAddTwoTone type='primary' onClick={() => { setAddElement(true); setAdding('folder'); }}>Add Folder</FolderAddTwoTone>
+          <DeleteTwoTone className='delete-icon' />
           {/* <Button type='primary' onClick={() => { setAddElement(true); setAdding('note'); }}>Add Note</Button> */}
         </div>
         {
@@ -109,7 +111,7 @@ export default function Editor() {
           <div className='add-folder'>
             <Input placeholder={ `Add ${adding} name` } onChange={handleNewResourceName} ></Input>
             <Button type='primary' onClick={() => { handleAddElement(); setAddElement(false); }}>Add</Button>
-            <Button danger='true' onClick={() => { handleAddElement(); setAddElement(false); }}>Cancel</Button>
+            <Button danger='true' onClick={() => { setAddElement(false); }}>Cancel</Button>
           </div>
         }
         <DirectoryTree

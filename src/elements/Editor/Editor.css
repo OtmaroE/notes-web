@@ -24,3 +24,10 @@
   justify-content: space-between;
   padding-top: 5px;
 }
+
+.delete-icon {
+  :hover {
+    cursor: pointer;
+    background-color: #8ecafe;
+  }
+}
