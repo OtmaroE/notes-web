@@ -1,7 +1,12 @@
 import { Tree, Button, Input } from "antd";
 import { useEffect, useState } from "react";
 import MDEditor from "@uiw/react-md-editor";
-import { DeleteTwoTone, FolderAddTwoTone } from "@ant-design/icons";
+import {
+  DeleteTwoTone,
+  FolderAddTwoTone,
+  FileAddTwoTone,
+  LeftCircleTwoTone,
+ } from "@ant-design/icons";
 import { useNavigate } from 'react-router-dom';
 import { getFolders, getNotes, getNote, updateNote, addFolder } from "../../http-requests";
 import './Editor.css';
@@ -12,6 +17,7 @@ export default function Editor() {
   const [directory, setDirectory] = useState([]);
   const [noteContent, setNoteContent] = useState('');
   const [selectedNote, setSelectedNote] = useState({});
+  const [selectedFolder, setSelectedFolder] = useState({});
   const [isNoteSelected, setIsNoteSelected] = useState(false);
   const [addElement, setAddElement] = useState(false);
   const [adding, setAdding] = useState('');
@@ -95,16 +101,30 @@ export default function Editor() {
     } else if (adding === 'note' ) {
 
     }
+  };
+
+  const handleOnClick = (_, data) => {
+    // corrects for issue when selecting a folder that is open
+    if (data.type === 'folder' && isNoteSelected) {
+      setIsNoteSelected(false);
+      setSelectedFolder({ id: data.key });
+    }
   }
+  
+  const handleDeleteElement = async () => {
+    if(!isNoteSelected) {
+      console.log('delete ', selectedFolder);
+    }
+  };
 
   return (
     <div>
       <div className='tree'>
         <div className='control-buttons'>
-          <Button type='dashed' onClick={() => handleClick()}>Back</Button>
-          <FolderAddTwoTone type='primary' onClick={() => { setAddElement(true); setAdding('folder'); }}>Add Folder</FolderAddTwoTone>
-          <DeleteTwoTone className='delete-icon' />
-          {/* <Button type='primary' onClick={() => { setAddElement(true); setAdding('note'); }}>Add Note</Button> */}
+          <LeftCircleTwoTone className='menu-icon' onClick={() => handleClick()}>Back</LeftCircleTwoTone>
+          <FolderAddTwoTone className='menu-icon' type='primary' onClick={() => { setAddElement(true); setAdding('folder'); }}>Add Folder</FolderAddTwoTone>
+          <FileAddTwoTone className='menu-icon' type='primary' onClick={() => { setAddElement(true); setAdding('note'); }}></FileAddTwoTone>
+          <DeleteTwoTone className='menu-icon' onClick={handleDeleteElement} />
         </div>
         {
           addElement &&
@@ -117,6 +137,7 @@ export default function Editor() {
         <DirectoryTree
           treeData={directory}
           onSelect={handleOnSelect}
+          onFocus={handleOnClick}
           className='navigator'
         />
       </div>
