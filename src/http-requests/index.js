@@ -133,11 +133,36 @@ export async function addFolder(folder) {
       body: JSON.stringify(folder),
     });
     if (folderResponse.status !== 201) {
-      console.error('unable to update note');
+      console.error('unable to add folder');
     } else {
       return folderResponse.json();
     }
   } catch (error) {
-    console.error('unable to update note');
+    console.error('unable to add folder');
+  }
+}
+
+/**
+ * Sends a POST request to create a folder with note object
+ * @param {Object} note 
+ */
+export async function addNote(folderId, note) {
+  const token = getToken();
+  try {
+    const noteResponse = await fetch(`${HOST}/users/me/folders/${folderId}/notes/`, {
+      headers: {
+        Authorization: `bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      method: 'POST',
+      body: JSON.stringify(note),
+    });
+    if (noteResponse.status !== 201) {
+      console.error('unable to add note');
+    } else {
+      return noteResponse.json();
+    }
+  } catch (error) {
+    console.error('Unable to add note')
   }
 }

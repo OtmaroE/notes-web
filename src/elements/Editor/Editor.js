@@ -8,7 +8,7 @@ import {
   LeftCircleTwoTone,
  } from "@ant-design/icons";
 import { useNavigate } from 'react-router-dom';
-import { getFolders, getNotes, getNote, updateNote, addFolder } from "../../http-requests";
+import { getFolders, getNotes, getNote, updateNote, addFolder, addNote } from "../../http-requests";
 import './Editor.css';
 
 const { DirectoryTree } = Tree;
@@ -44,31 +44,16 @@ export default function Editor() {
 
   const handleOnSelect = async (id, event) => {
     const { node } = event;
-    if (node.expanded) return;
     if (node.type === 'note') {
       const note = await getNote(node.folderId, node.noteId);
       setNoteContent(note.content);
       setIsNoteSelected(true);
       setSelectedNote(note);
     } else {
-      const notes = await getNotes(id);
-      const newFolders = directory.map(folder => {
-        if(folder.key === id[0]) {
-          return {
-            ...folder,
-            children: notes.map(note => ({
-              title: note.name,
-              key: `note-${note.id}`,
-              noteId: note.id,
-              folderId: note.folderId,
-              type: 'note',
-              isLeaf: true,
-            })),
-          }
-        }
-        return folder;
-      });
-      setDirectory(newFolders);
+      const folderId = id[0];
+      setIsNoteSelected(false);
+      setSelectedFolder({ id: folderId });
+      await updateDirectoryForFolder(folderId);
     }
   };
 
@@ -77,7 +62,7 @@ export default function Editor() {
     setNewElementName(value)
   };
 
-  const handleClick = () => {
+  const handleBackButton = () => {
     return navigate('/');
   };
 
@@ -99,7 +84,9 @@ export default function Editor() {
       const newDirectory = [...directory, newFolder];
       setDirectory(newDirectory);
     } else if (adding === 'note' ) {
-
+      const folderId = selectedFolder.id;
+      await addNote(folderId, { name: newElementName, folderId });
+      await updateDirectoryForFolder(folderId);
     }
   };
 
@@ -117,11 +104,32 @@ export default function Editor() {
     }
   };
 
+  const updateDirectoryForFolder = async (folderId) => {
+    const notes = await getNotes(folderId);
+    const newFolders = directory.map(folder => {
+      if(folder.key === folderId) {
+        return {
+          ...folder,
+          children: notes.map(note => ({
+            title: note.name,
+            key: `note-${note.id}`,
+            noteId: note.id,
+            folderId: note.folderId,
+            type: 'note',
+            isLeaf: true,
+          })),
+        }
+      }
+      return folder;
+    });
+    setDirectory(newFolders);
+  }
+
   return (
     <div>
       <div className='tree'>
         <div className='control-buttons'>
-          <LeftCircleTwoTone className='menu-icon' onClick={() => handleClick()}>Back</LeftCircleTwoTone>
+          <LeftCircleTwoTone className='menu-icon' onClick={() => handleBackButton()}>Back</LeftCircleTwoTone>
           <FolderAddTwoTone className='menu-icon' type='primary' onClick={() => { setAddElement(true); setAdding('folder'); }}>Add Folder</FolderAddTwoTone>
           <FileAddTwoTone className='menu-icon' type='primary' onClick={() => { setAddElement(true); setAdding('note'); }}></FileAddTwoTone>
           <DeleteTwoTone className='menu-icon' onClick={handleDeleteElement} />
