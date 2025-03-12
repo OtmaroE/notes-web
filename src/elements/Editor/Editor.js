@@ -1,4 +1,10 @@
-import { Tree, Button, Input } from "antd";
+import {
+  Tree,
+  Button,
+  Input,
+  Alert,
+  Modal,
+} from "antd";
 import { useEffect, useState } from "react";
 import MDEditor from "@uiw/react-md-editor";
 import {
@@ -8,7 +14,15 @@ import {
   LeftCircleTwoTone,
  } from "@ant-design/icons";
 import { useNavigate } from 'react-router-dom';
-import { getFolders, getNotes, getNote, updateNote, addFolder, addNote } from "../../http-requests";
+import {
+  getFolders,
+  getNotes,
+  getNote,
+  updateNote,
+  addFolder,
+  addNote,
+  deleteNote,
+} from "../../http-requests";
 import './Editor.css';
 
 const { DirectoryTree } = Tree;
@@ -22,6 +36,9 @@ export default function Editor() {
   const [addElement, setAddElement] = useState(false);
   const [adding, setAdding] = useState('');
   const [newElementName, setNewElementName] = useState('');
+  const [showSucess, setShowSucess] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
+  const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
 
   const navigate = useNavigate();
 
@@ -70,6 +87,11 @@ export default function Editor() {
     const { id, folderId } = selectedNote;
     const updatedNote = { content: noteContent};
     await updateNote(folderId, id, updatedNote);
+    setSuccessMessage('Note saved successfully');
+    setShowSucess(true);
+    setTimeout(() => {
+      setShowSucess(false)
+    }, 2000)
   };
 
   const handleAddElement = async () => {
@@ -100,8 +122,17 @@ export default function Editor() {
   
   const handleDeleteElement = async () => {
     if(!isNoteSelected) {
-      console.log('delete ', selectedFolder);
+      return;
     }
+    setConfirmDeleteOpen(false);
+    await deleteNote(selectedNote.folderId, selectedNote.id);
+    setSuccessMessage('Note deleted succesfully');
+    setSelectedNote(false);
+    setShowSucess(true);
+    await updateDirectoryForFolder(selectedNote.folderId);
+    setTimeout(() => {
+      setShowSucess(false);
+    }, 2000)
   };
 
   const updateDirectoryForFolder = async (folderId) => {
@@ -127,12 +158,20 @@ export default function Editor() {
 
   return (
     <div>
+      <Modal title='Are you sure?' open={confirmDeleteOpen} onOk={handleDeleteElement} onCancel={() => setConfirmDeleteOpen(false)}>
+        <p>Are you sure you want to delete note:</p>
+        <p>{selectedNote.name}</p>
+      </Modal>
+      {
+        showSucess &&
+        <Alert message={successMessage} type='success' showIcon />
+      }
       <div className='tree'>
         <div className='control-buttons'>
           <LeftCircleTwoTone className='menu-icon' onClick={() => handleBackButton()}>Back</LeftCircleTwoTone>
           <FolderAddTwoTone className='menu-icon' type='primary' onClick={() => { setAddElement(true); setAdding('folder'); }}>Add Folder</FolderAddTwoTone>
           <FileAddTwoTone className='menu-icon' type='primary' onClick={() => { setAddElement(true); setAdding('note'); }}></FileAddTwoTone>
-          <DeleteTwoTone className='menu-icon' onClick={handleDeleteElement} />
+          <DeleteTwoTone className='menu-icon' onClick={() => setConfirmDeleteOpen(true)} />
         </div>
         {
           addElement &&
@@ -166,7 +205,7 @@ export default function Editor() {
         isNoteSelected &&
         <div className='control-buttons'>
           <Button type='primary' onClick={handleSave}>Save</Button>
-          <Button danger='true' type='primary'>Delete</Button>
+          <Button danger='true' type='primary' onClick={() => setConfirmDeleteOpen(true)}>Delete</Button>
         </div>
       }
     </div>
