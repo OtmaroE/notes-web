@@ -1,23 +1,12 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { isLoggedIn } from "../security/Protected";
+import React, { useEffect } from "react";
 
 export default function Home() {
-  const homePage = (
-    <div>
-      <ul>
-        <li>
-          <Link to="/editor">Editor App</Link>
-        </li>
-        <li>
-          <Link to='/logout'>Logout</Link>
-        </li>
-      </ul>
-    </div>
-  )
-  return (
-    <div>
-      {isLoggedIn() ? homePage : <Link to='/login'>Login</Link>}
-    </div>
-  )
+  const navigate = useNavigate();
+  useEffect(() => {
+    isLoggedIn() ? navigate('/editor') : navigate('/login');
+  });
+  return (<div></div>)
 }

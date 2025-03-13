@@ -8,10 +8,10 @@ import {
 import { useEffect, useState } from "react";
 import MDEditor from "@uiw/react-md-editor";
 import {
-  DeleteTwoTone,
-  FolderAddTwoTone,
-  FileAddTwoTone,
-  LeftCircleTwoTone,
+  DeleteOutlined,
+  FolderAddOutlined,
+  FileAddOutlined,
+  LogoutOutlined,
  } from "@ant-design/icons";
 import { useNavigate } from 'react-router-dom';
 import {
@@ -37,7 +37,7 @@ export default function Editor() {
   const [adding, setAdding] = useState('');
   const [newElementName, setNewElementName] = useState('');
   const [showSucess, setShowSucess] = useState(false);
-  const [successMessage, setSuccessMessage] = useState('');
+  const [confirmationMessage, setConfirmationMessage] = useState('');
   const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
 
   const navigate = useNavigate();
@@ -80,14 +80,14 @@ export default function Editor() {
   };
 
   const handleBackButton = () => {
-    return navigate('/');
+    return navigate('/logout');
   };
 
   const handleSave = async () => {
     const { id, folderId } = selectedNote;
     const updatedNote = { content: noteContent};
     await updateNote(folderId, id, updatedNote);
-    setSuccessMessage('Note saved successfully');
+    setConfirmationMessage('Note saved successfully');
     setShowSucess(true);
     setTimeout(() => {
       setShowSucess(false)
@@ -126,7 +126,7 @@ export default function Editor() {
     }
     setConfirmDeleteOpen(false);
     await deleteNote(selectedNote.folderId, selectedNote.id);
-    setSuccessMessage('Note deleted succesfully');
+    setConfirmationMessage('Note deleted succesfully');
     setSelectedNote(false);
     setShowSucess(true);
     await updateDirectoryForFolder(selectedNote.folderId);
@@ -164,14 +164,14 @@ export default function Editor() {
       </Modal>
       {
         showSucess &&
-        <Alert message={successMessage} type='success' showIcon />
+        <Alert message={confirmationMessage} type='success' showIcon />
       }
       <div className='tree'>
         <div className='control-buttons'>
-          <LeftCircleTwoTone className='menu-icon' onClick={() => handleBackButton()}>Back</LeftCircleTwoTone>
-          <FolderAddTwoTone className='menu-icon' type='primary' onClick={() => { setAddElement(true); setAdding('folder'); }}>Add Folder</FolderAddTwoTone>
-          <FileAddTwoTone className='menu-icon' type='primary' onClick={() => { setAddElement(true); setAdding('note'); }}></FileAddTwoTone>
-          <DeleteTwoTone className='menu-icon' onClick={() => setConfirmDeleteOpen(true)} />
+          <LogoutOutlined className='menu-icon' onClick={() => handleBackButton()}/>
+          <FolderAddOutlined className='menu-icon' type='primary' onClick={() => { setAddElement(true); setAdding('folder'); }}/>
+          <FileAddOutlined className='menu-icon' type='primary' onClick={() => { setAddElement(true); setAdding('note'); }}/>
+          <DeleteOutlined className='menu-icon' onClick={() => setConfirmDeleteOpen(true)} />
         </div>
         {
           addElement &&
