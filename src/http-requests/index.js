@@ -107,7 +107,7 @@ export async function updateNote(folderId, noteId, note) {
       method: 'PATCH',
       body: JSON.stringify(note),
     });
-    if (noteResponse.status !== 200) {
+    if (noteResponse.status !== 201) {
       console.log('unable to fetch notes');
     } else {
       return noteResponse.json();
