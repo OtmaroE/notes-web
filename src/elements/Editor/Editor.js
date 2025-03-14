@@ -4,6 +4,7 @@ import {
   Input,
   Alert,
   Modal,
+  notification
 } from "antd";
 import { useEffect, useState } from "react";
 import MDEditor from "@uiw/react-md-editor";
@@ -41,6 +42,7 @@ export default function Editor() {
   const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
 
   const navigate = useNavigate();
+  const [api, contextHolder] = notification.useNotification();
 
   useEffect(() => {
     const setup = async () => {
@@ -58,6 +60,14 @@ export default function Editor() {
     }
     setup();
   }, []);
+
+  const openNotification = ({ message, description }) => {
+    api.success({
+      message,
+      description,
+      placement: 'topRight',
+    });
+  };
 
   const handleOnSelect = async (id, event) => {
     const { node } = event;
@@ -87,11 +97,7 @@ export default function Editor() {
     const { id, folderId } = selectedNote;
     const updatedNote = { content: noteContent};
     await updateNote(folderId, id, updatedNote);
-    setConfirmationMessage('Note saved successfully');
-    setShowSucess(true);
-    setTimeout(() => {
-      setShowSucess(false)
-    }, 2000)
+    openNotification({ message: 'Saved', description: 'Note saved successfully' });
   };
 
   const handleAddElement = async () => {
@@ -126,13 +132,9 @@ export default function Editor() {
     }
     setConfirmDeleteOpen(false);
     await deleteNote(selectedNote.folderId, selectedNote.id);
-    setConfirmationMessage('Note deleted succesfully');
     setSelectedNote(false);
-    setShowSucess(true);
+    openNotification({ message: 'Deleted', description: 'Note deleted successfully' })
     await updateDirectoryForFolder(selectedNote.folderId);
-    setTimeout(() => {
-      setShowSucess(false);
-    }, 2000)
   };
 
   const updateDirectoryForFolder = async (folderId) => {
@@ -158,6 +160,7 @@ export default function Editor() {
 
   return (
     <div>
+      {contextHolder}
       <Modal title='Are you sure?' open={confirmDeleteOpen} onOk={handleDeleteElement} onCancel={() => setConfirmDeleteOpen(false)}>
         <p>Are you sure you want to delete note:</p>
         <p>{selectedNote.name}</p>
