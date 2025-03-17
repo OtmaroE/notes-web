@@ -37,8 +37,6 @@ export default function Editor() {
   const [addElement, setAddElement] = useState(false);
   const [adding, setAdding] = useState('');
   const [newElementName, setNewElementName] = useState('');
-  const [showSucess, setShowSucess] = useState(false);
-  const [confirmationMessage, setConfirmationMessage] = useState('');
   const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
 
   const navigate = useNavigate();
@@ -79,7 +77,7 @@ export default function Editor() {
     } else {
       const folderId = id[0];
       setIsNoteSelected(false);
-      setSelectedFolder({ id: folderId });
+      setSelectedFolder({ id: folderId, name: node.title });
       await updateDirectoryForFolder(folderId);
     }
   };
@@ -161,14 +159,16 @@ export default function Editor() {
   return (
     <div>
       {contextHolder}
-      <Modal title='Are you sure?' open={confirmDeleteOpen} onOk={handleDeleteElement} onCancel={() => setConfirmDeleteOpen(false)}>
-        <p>Are you sure you want to delete note:</p>
-        <p>{selectedNote.name}</p>
+      <Modal
+        title='Are you sure?'
+        open={confirmDeleteOpen}
+        onOk={handleDeleteElement}
+        onCancel={() => setConfirmDeleteOpen(false)}
+        forceRender={true}
+      >
+          <p>Please confirm that you want to delete the following item:</p>
+          <p>{ isNoteSelected ? selectedNote.name : selectedFolder.name }</p>
       </Modal>
-      {
-        showSucess &&
-        <Alert message={confirmationMessage} type='success' showIcon />
-      }
       <div className='tree'>
         <div className='control-buttons'>
           <LogoutOutlined className='menu-icon' onClick={() => handleBackButton()}/>
