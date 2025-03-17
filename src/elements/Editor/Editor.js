@@ -2,7 +2,6 @@ import {
   Tree,
   Button,
   Input,
-  Alert,
   Modal,
   notification
 } from "antd";
@@ -23,6 +22,7 @@ import {
   addFolder,
   addNote,
   deleteNote,
+  deleteFolder,
 } from "../../http-requests";
 import './Editor.css';
 
@@ -42,21 +42,22 @@ export default function Editor() {
   const navigate = useNavigate();
   const [api, contextHolder] = notification.useNotification();
 
-  useEffect(() => {
-    const setup = async () => {
-      const folders = await getFolders();
-      const newDirectory = [];
-      folders.forEach(folder => {
-        newDirectory.push({
-          title: folder.name,
-          type: 'folder',
-          key: folder.id,
-          children: [],
-        });
+  const initialState = async () => {
+    const folders = await getFolders();
+    const newDirectory = [];
+    folders.forEach(folder => {
+      newDirectory.push({
+        title: folder.name,
+        type: 'folder',
+        key: folder.id,
+        children: [],
       });
-      setDirectory(newDirectory);
-    }
-    setup();
+    });
+    setDirectory(newDirectory);
+  }
+
+  useEffect(() => {
+    initialState();
   }, []);
 
   const openNotification = ({ message, description }) => {
@@ -126,13 +127,17 @@ export default function Editor() {
   
   const handleDeleteElement = async () => {
     if(!isNoteSelected) {
-      return;
+      await deleteFolder(selectedFolder.id);
+      await initialState();
+
+    } else {
+      await deleteNote(selectedNote.folderId, selectedNote.id);
+      setSelectedNote(false);
+      await updateDirectoryForFolder(selectedNote.folderId);
     }
     setConfirmDeleteOpen(false);
-    await deleteNote(selectedNote.folderId, selectedNote.id);
-    setSelectedNote(false);
-    openNotification({ message: 'Deleted', description: 'Note deleted successfully' })
-    await updateDirectoryForFolder(selectedNote.folderId);
+    openNotification({ message: 'Deleted', description: 'Item deleted successfully' });
+    setIsNoteSelected(false);
   };
 
   const updateDirectoryForFolder = async (folderId) => {

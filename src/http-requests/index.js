@@ -171,7 +171,7 @@ export async function addNote(folderId, note) {
  * Sends a DELETE request to remove the given note id
  * @param {Number} folderId forlder that contains the note
  * @param {Number} noteId note attempted to be deleted
- * @returns 
+ * @returns void
  */
 export async function deleteNote(folderId, noteId) {
   const token = getToken();
@@ -182,11 +182,32 @@ export async function deleteNote(folderId, noteId) {
       },
       method: 'DELETE',
     });
-    if (noteResponse.status !== 201) {
+    if (noteResponse.status !== 204) {
       console.error('unable to delete note');
-    } else {
-      return noteResponse.json();
     }
+    return;
+  } catch (error) {
+    console.log('Unable to delete note');
+  }
+}
+/**
+ * Sends a DELETE request to remove the fiven folder
+ * @param {Number} folderId 
+ * @returns void
+ */
+export async function deleteFolder(folderId) {
+  const token = getToken();
+  try {
+    const folderResponse = await fetch(`${HOST}/users/me/folders/${folderId}`, {
+      headers: {
+        Authorization: `bearer ${token}`,
+      },
+      method: 'DELETE',
+    });
+    if (folderResponse.status !== 204) {
+      console.error('Unable to delete note');
+    }
+    return;
   } catch (error) {
     console.log('Unable to delete note');
   }
