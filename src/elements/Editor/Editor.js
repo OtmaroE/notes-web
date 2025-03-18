@@ -124,6 +124,14 @@ export default function Editor() {
       setSelectedFolder({ id: data.key });
     }
   }
+  const handleAddElementFromLeftMenu = () => {
+    // case when nothing has been selected
+    const notFolderSelected = Object.keys(selectedFolder).length === 0;
+    if (!isNoteSelected && notFolderSelected) {
+      return;
+    }
+    setConfirmDeleteOpen(true);
+  }
   
   const handleDeleteElement = async () => {
     if(!isNoteSelected) {
@@ -179,7 +187,7 @@ export default function Editor() {
           <LogoutOutlined className='menu-icon' onClick={() => handleBackButton()}/>
           <FolderAddOutlined className='menu-icon' type='primary' onClick={() => { setAddElement(true); setAdding('folder'); }}/>
           <FileAddOutlined className='menu-icon' type='primary' onClick={() => { setAddElement(true); setAdding('note'); }}/>
-          <DeleteOutlined className='menu-icon' onClick={() => setConfirmDeleteOpen(true)} />
+          <DeleteOutlined className='menu-icon' onClick={() => handleAddElementFromLeftMenu()} />
         </div>
         {
           addElement &&
