@@ -11,6 +11,7 @@ import Home from '../elements/Home.js';
 import Login from '../elements/Login.js';
 import Logout from '../elements/Logout.js';
 import Editor from '../elements/Editor/Editor.js';
+import Register from '../elements/Register.js';
 import './router.css'
 
 const router = createBrowserRouter([
@@ -29,6 +30,10 @@ const router = createBrowserRouter([
   {
     path: '/editor',
     element: <Protected> <Editor/> </Protected>
+  },
+  {
+    path: '/register',
+    element: <Register/>
   }
 ]);
 

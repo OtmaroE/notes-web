@@ -212,3 +212,29 @@ export async function deleteFolder(folderId) {
     console.log('Unable to delete note');
   }
 }
+/**
+ * Sends a POST requests to create user
+ * @param {Object} userPayload
+ *  -- name
+ *  -- email 
+ * @returns 
+ */
+export async function createUser(userPayload) {
+  const token = getToken();
+  try {
+    const userCreateResponse = await fetch(`${HOST}/users`, {
+      headers: {
+        Authorization: `bearer ${token}`,
+        'Content-Type': 'Application/json'
+      },
+      method: 'POST',
+      body: JSON.stringify(userPayload),
+    });
+    if (userCreateResponse.status !== 201) {
+      console.error('Unable to create user');
+    }
+    return userCreateResponse.json();
+  } catch (error) {
+    console.log('Unable to create user');
+  }
+}
