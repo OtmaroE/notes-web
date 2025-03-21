@@ -1,5 +1,5 @@
-import { useEffect } from "react";
-import { Navigate } from "react-router-dom";
+import { useEffect } from 'react';
+import { Navigate } from 'react-router-dom';
 
 export default function Logout() {
   const removeToken = (event) => {
