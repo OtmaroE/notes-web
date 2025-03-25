@@ -29,7 +29,7 @@ The `Dockerfile` contains the instructions to build the react app and install `s
 
 To create an image for this production build run:
 ```
-REACT_APP_API_HOST_URL=http://localhost:3030 docker build -t notes-web-production .
+docker build --build-arg REACT_APP_API_HOST_URL=http://localhost:3030 -t notes-web-production .
 ```
 > [!NOTE]  
 > Update the value for the environment variable to the API URL
