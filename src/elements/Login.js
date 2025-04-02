@@ -58,7 +58,7 @@ export default function Login() {
         <Button type='primary' htmlType='submit' className='login-form-button'>
           Log in
         </Button>
-        Or <a href='/register' >Register now!</a>
+        Or <a href='register' >Register now!</a>
       </Form.Item>
     </Form>
   );
