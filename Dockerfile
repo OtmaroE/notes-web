@@ -20,7 +20,5 @@ COPY . /user/src/app
 
 RUN npm run build
 
-RUN npm install -g serve
 
-
-CMD ["serve", "-s", "build", "-l", "8080"]
+CMD ["node", "server.js"]
