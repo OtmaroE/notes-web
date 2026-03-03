@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button, Checkbox, Form, Input } from 'antd';
+import { Button, Checkbox, Form, Input, notification } from 'antd';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 
 
@@ -12,6 +12,12 @@ export default function Login() {
   const [loginError, setLoginError] = useState(false); 
 
   const navigate = useNavigate();
+
+  const showDemoServerNotification = () => {
+    notification.error({
+      message: 'Demo server has not being started. Please contact owner of site for activation'
+    });
+  };
 
   const handleSubmit = async (values) => {
     const { username, password } = values;
@@ -27,6 +33,7 @@ export default function Login() {
       }
     } catch (error) {
       setLoginError(true);
+      showDemoServerNotification();
     }
   };
 
@@ -66,6 +73,17 @@ export default function Login() {
   return (
     <div className='login-form'>
       { isLoggedIn() ? navigate('/') : loginForm }
+      <div className='demo-credentials-sticky'>
+        <div className='demo-credentials-title'>Demo Login</div>
+        <div className='demo-credential-row'>
+          <span className='demo-credential-label'>username</span>
+          <span className='demo-credential-value'>demo</span>
+        </div>
+        <div className='demo-credential-row'>
+          <span className='demo-credential-label'>password</span>
+          <span className='demo-credential-value'>demo</span>
+        </div>
+      </div>
     </div>
   );
 }
